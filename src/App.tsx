@@ -6,7 +6,7 @@ import { fromNano } from "ton-core";
 
 import WebApp from '@twa-dev/sdk'
 
-WebApp.showAlert('Hey there!');
+//WebApp.showAlert('Hey there!');
 
 function App() {
   const {
