@@ -1,6 +1,6 @@
+/* Panel Styles */
 .Panel {
-    width: 30%;
-    margin: 10px;
+    width: 30%; /* Make each panel take up 30% of the container width */
     padding: 20px;
     background-color: #f8f9fa;
     border-radius: 8px;
@@ -25,9 +25,10 @@
     margin-bottom: 20px;
   }
   
+  /* Payment Buttons Styles */
   .PaymentButtons {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
   }
   
   .PaymentButton {
@@ -44,10 +45,12 @@
     background-color: #0056b3;
   }
   
+  /* Container that holds the panels */
   .Container {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 10px;
+    display: flex; /* Enables horizontal layout */
+    justify-content: space-around; /* Distributes space evenly between panels */
+    align-items: flex-start; /* Aligns the panels at the top of the container */
     padding: 20px;
+    gap: 20px; /* Adds space between panels */
+    flex-wrap: nowrap; /* Ensures panels stay in one row (no wrapping) */
   }

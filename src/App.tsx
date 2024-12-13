@@ -35,24 +35,26 @@ const handlePayWithStars = (skinName: string) => {
   return (
     <div>
       <div>
-      <Panel
-          skinName="CS2 Skin 1"
-          description="A cool skin for CS2 with excellent graphics and design."
-          onPayWithTON={() => handlePayWithTON('CS2 Skin 1')}
-          onPayWithStars={() => handlePayWithStars('CS2 Skin 1')}
-        />
-      <Panel
-          skinName="CS2 Skin 2"
-          description="A cool skin for CS2 with excellent graphics and design."
-          onPayWithTON={() => handlePayWithTON('CS2 Skin 2')}
-          onPayWithStars={() => handlePayWithStars('CS2 Skin 2')}
-      />
-      <Panel
-          skinName="CS2 Skin 3"
-          description="A cool skin for CS2 with excellent graphics and design."
-          onPayWithTON={() => handlePayWithTON('CS2 Skin 3')}
-          onPayWithStars={() => handlePayWithStars('CS2 Skin 3')}
-        />
+        <div className="Container">
+          <Panel
+              skinName="CS2 Skin 1"
+              description="A cool skin for CS2 with excellent graphics and design."
+              onPayWithTON={() => handlePayWithTON('CS2 Skin 1')}
+              onPayWithStars={() => handlePayWithStars('CS2 Skin 1')}
+            />
+          <Panel
+              skinName="CS2 Skin 2"
+              description="A cool skin for CS2 with excellent graphics and design."
+              onPayWithTON={() => handlePayWithTON('CS2 Skin 2')}
+              onPayWithStars={() => handlePayWithStars('CS2 Skin 2')}
+          />
+          <Panel
+              skinName="CS2 Skin 3"
+              description="A cool skin for CS2 with excellent graphics and design."
+              onPayWithTON={() => handlePayWithTON('CS2 Skin 3')}
+              onPayWithStars={() => handlePayWithStars('CS2 Skin 3')}
+            />
+        </div>
       </div>
 
       <div>
