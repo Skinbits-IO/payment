@@ -5,6 +5,7 @@ import { useTonConnect } from "./hooks/useTonConnect";
 import { fromNano } from "ton-core";
 
 import WebApp from '@twa-dev/sdk'
+import Panel from './components/panel.tsx'
 
 //WebApp.showAlert('Hey there!');
 
@@ -26,6 +27,9 @@ const {connected } = useTonConnect();
 
   return (
     <div>
+      <div>
+        < Panel/>
+      </div>
       <div>
         <TonConnectButton />
       </div>

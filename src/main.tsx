@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import './index.css';
 import { TonConnectUIProvider } from '@tonconnect/ui-react';
+import Panel from './components/panel'
+
 
 // this manifest is used temporarily for development purposes
 const manifestUrl = 'https://Artyomcha.github.io/test-tonconnect/tonconnect-manifest.json';
