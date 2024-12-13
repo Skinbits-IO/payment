@@ -20,6 +20,13 @@ function App() {
   } = useMainContract();
 
 const {connected } = useTonConnect();
+const handlePayWithTON = (skinName: string) => {
+  console.log(`Paying with TON for skin: ${skinName}`);
+};
+
+const handlePayWithStars = (skinName: string) => {
+  console.log(`Paying with Stars for skin: ${skinName}`);
+};
 
 //const showAlert = () => {
  // WebApp.showAlert("Hey there!");
@@ -28,8 +35,26 @@ const {connected } = useTonConnect();
   return (
     <div>
       <div>
-        < Panel/>
+      <Panel
+          skinName="CS2 Skin 1"
+          description="A cool skin for CS2 with excellent graphics and design."
+          onPayWithTON={() => handlePayWithTON('CS2 Skin 1')}
+          onPayWithStars={() => handlePayWithStars('CS2 Skin 1')}
+        />
+      <Panel
+          skinName="CS2 Skin 2"
+          description="A cool skin for CS2 with excellent graphics and design."
+          onPayWithTON={() => handlePayWithTON('CS2 Skin 2')}
+          onPayWithStars={() => handlePayWithStars('CS2 Skin 2')}
+      />
+      <Panel
+          skinName="CS2 Skin 3"
+          description="A cool skin for CS2 with excellent graphics and design."
+          onPayWithTON={() => handlePayWithTON('CS2 Skin 3')}
+          onPayWithStars={() => handlePayWithStars('CS2 Skin 3')}
+        />
       </div>
+
       <div>
         <TonConnectButton />
       </div>
