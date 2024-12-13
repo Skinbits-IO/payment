@@ -1,4 +1,3 @@
-import React from 'react';
 import './Panel.css'
 function Panel() {
     return (
