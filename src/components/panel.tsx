@@ -1,4 +1,4 @@
-import './panel.css';
+import './Panel.css';
 
 interface PanelProps {
   skinName: string;
