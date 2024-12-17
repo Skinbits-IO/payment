@@ -15,8 +15,8 @@ function Panel({ skinName, description, price, onPayWithTON, onPayWithStars }: P
       <p>{description}</p>
       <p><b>Price:</b> {price} TON</p>
       <div className="PaymentButtons">
-        <button onClick={() => onPayWithTON(skinName, price)}>Pay with TON</button>
-        <button onClick={() => onPayWithStars(skinName, price)}>Pay with Stars</button>
+        <button onClick={() => onPayWithTON(skinName, price)} className="PaymentButton">Pay with TON</button>
+        <button onClick={() => onPayWithStars(skinName, price)} className="PaymentButton">Pay with Stars</button>
       </div>
     </div>
   );
