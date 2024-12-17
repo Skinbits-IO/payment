@@ -40,3 +40,26 @@
 .read-the-docs {
   color: #888;
 }
+
+.CenterContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; 
+}
+
+.TonConnectContainer {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.Container {
+  margin-top: 100px;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 20px;
+}
