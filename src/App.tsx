@@ -17,6 +17,8 @@ function App() {
   } = useMainContract();
 
   const { connected } = useTonConnect();
+  
+  console.log("Is connected:", connected);
 
   const handlePayWithTON = (skinName: string, price: number) => {
     console.log(`Paying with TON for ${skinName} at ${price} TON.`);
@@ -101,5 +103,6 @@ function App() {
     </div>
   );
 }
+
 
 export default App;
