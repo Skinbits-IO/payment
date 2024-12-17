@@ -19,14 +19,14 @@ function App() {
     sendWithdrawalRequest
   } = useMainContract();
 
-const {connected } = useTonConnect();
-const handlePayWithTON = (skinName: string) => {
-  console.log(`Paying with TON for skin: ${skinName}`);
-};
+  const {connected } = useTonConnect();
+  const handlePayWithTON = (skinName: string) => {
+    console.log(`Paying with TON for skin: ${skinName}`);
+  };
 
-const handlePayWithStars = (skinName: string) => {
-  console.log(`Paying with Stars for skin: ${skinName}`);
-};
+  const handlePayWithStars = (skinName: string) => {
+    console.log(`Paying with Stars for skin: ${skinName}`);
+  };
 
 //const showAlert = () => {
  // WebApp.showAlert("Hey there!");
@@ -35,25 +35,28 @@ const handlePayWithStars = (skinName: string) => {
   return (
     <div>
       <div>
-        <div className="Container">
+      <div className="Container">
           <Panel
-              skinName="CS2 Skin 1"
-              description="A cool skin for CS2 with excellent graphics and design."
-              onPayWithTON={() => handlePayWithTON('CS2 Skin 1')}
-              onPayWithStars={() => handlePayWithStars('CS2 Skin 1')}
-            />
-          <Panel
-              skinName="CS2 Skin 2"
-              description="A cool skin for CS2 with excellent graphics and design."
-              onPayWithTON={() => handlePayWithTON('CS2 Skin 2')}
-              onPayWithStars={() => handlePayWithStars('CS2 Skin 2')}
+            skinName="CS2 Skin 1"
+            description="A cool skin for CS2 with excellent graphics and design."
+            price={1.5} // Price in TON
+            onPayWithTON={handlePayWithTON}
+            onPayWithStars={handlePayWithStars}
           />
           <Panel
-              skinName="CS2 Skin 3"
-              description="A cool skin for CS2 with excellent graphics and design."
-              onPayWithTON={() => handlePayWithTON('CS2 Skin 3')}
-              onPayWithStars={() => handlePayWithStars('CS2 Skin 3')}
-            />
+            skinName="CS2 Skin 2"
+            description="A cool skin for CS2 with excellent graphics and design."
+            price={2.0}
+            onPayWithTON={handlePayWithTON}
+            onPayWithStars={handlePayWithStars}
+          />
+          <Panel
+            skinName="CS2 Skin 3"
+            description="A cool skin for CS2 with excellent graphics and design."
+            price={3.25}
+            onPayWithTON={handlePayWithTON}
+            onPayWithStars={handlePayWithStars}
+          />
         </div>
       </div>
 
