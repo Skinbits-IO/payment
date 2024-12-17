@@ -34,6 +34,7 @@ function App() {
         // If not connected, center the TonConnectButton
         <div className="CenterContainer">
           <TonConnectButton />
+          
         </div>
       ) : (
         // Once connected, move the TonConnectButton to the top-right and show the panels
@@ -102,6 +103,7 @@ function App() {
       )}
     </div>
   );
+
 }
 
 
