@@ -20,13 +20,43 @@ function App() {
   
   console.log("Is connected:", connected);
 
-  const handlePayWithTON = (skinName: string, price: number) => {
-    console.log(`Paying with TON for ${skinName} at ${price} TON.`);
+  const handlePayWithTON = (skinName: string, tonPrice: number) => {
+    console.log(`Paying with TON for ${skinName}, price: ${tonPrice} TON`);
   };
 
-  const handlePayWithStars = (skinName: string, price: number) => {
-    console.log(`Paying with Stars for ${skinName} at ${price} TON equivalent.`);
+  const handlePayWithStars = async (skinName: string, starsPrice: number) => {
+    console.log(`Paying with Stars for ${skinName}, price: ${starsPrice} XTR`);
+  
+    try {
+      // 1. Call your server's /create-invoice endpoint
+      const response = await fetch("http://localhost:3000/create-invoice", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ skinName, starsPrice }),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Server error: ${response.statusText}`);
+      }
+  
+      const data = await response.json(); 
+      const invoiceLink = data.invoiceLink;
+      console.log("Invoice link received:", invoiceLink);
+  
+      // 2. Use Telegram WebApp SDK to open the invoice
+      WebApp.openInvoice(invoiceLink, (status) => {
+        console.log("Payment status:", status);
+        if (status === "paid") {
+          console.log("User has paid for:", skinName);
+          // You can do post-payment logic here.
+        }
+      });
+    } catch (error) {
+      console.error("Error in handlePayWithStars:", error);
+    }
   };
+  
+
 
   return (
     <div>
@@ -47,21 +77,24 @@ function App() {
             <Panel
               skinName="CS2 Skin 1"
               description="A cool skin for CS2 with excellent graphics and design."
-              price={1.5} // Price in TON
+              tonPrice={1.5}       // Price in TON
+              starsPrice={150}  // Price in TON
               onPayWithTON={handlePayWithTON}
               onPayWithStars={handlePayWithStars}
             />
             <Panel
               skinName="CS2 Skin 2"
               description="A cool skin for CS2 with excellent graphics and design."
-              price={2.0}
+              tonPrice={1.5}       // Price in TON
+              starsPrice={150} 
               onPayWithTON={handlePayWithTON}
               onPayWithStars={handlePayWithStars}
             />
             <Panel
               skinName="CS2 Skin 3"
               description="A cool skin for CS2 with excellent graphics and design."
-              price={3.25}
+              tonPrice={1.5}       // Price in TON
+              starsPrice={150} 
               onPayWithTON={handlePayWithTON}
               onPayWithStars={handlePayWithStars}
             />
