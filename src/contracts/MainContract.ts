@@ -35,7 +35,7 @@ export class MainContract implements Contract {
     async sendDeploy(provider: ContractProvider, via: Sender, value: bigint) {
       await provider.internal(via, {
         value,
-        sendMode: SendMode.PAY_GAS_SEPARATLY,
+        sendMode: SendMode.PAY_GAS_SEPARATELY,
         body: beginCell().storeUint(2,32).endCell(),
       });
   }
@@ -54,7 +54,7 @@ export class MainContract implements Contract {
         
         await provider.internal(sender, {
             value,
-            sendMode: SendMode.PAY_GAS_SEPARATLY,
+            sendMode: SendMode.PAY_GAS_SEPARATELY,
             body: msg_body,
         });
     }
@@ -66,7 +66,7 @@ export class MainContract implements Contract {
     
         await provider.internal(sender, {
           value,
-          sendMode: SendMode.PAY_GAS_SEPARATLY,
+          sendMode: SendMode.PAY_GAS_SEPARATELY,
           body: msg_body,
         });
       }
@@ -80,7 +80,7 @@ export class MainContract implements Contract {
     
         await provider.internal(sender, {
           value,
-          sendMode: SendMode.PAY_GAS_SEPARATLY,
+          sendMode: SendMode.PAY_GAS_SEPARATELY,
           body: msg_body,
         });
       }
@@ -98,7 +98,7 @@ export class MainContract implements Contract {
     
         await provider.internal(sender, {
           value,
-          sendMode: SendMode.PAY_GAS_SEPARATLY,
+          sendMode: SendMode.PAY_GAS_SEPARATELY,
           body: msg_body,
         });
       }
