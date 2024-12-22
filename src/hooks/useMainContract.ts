@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { MainContract } from "../contracts/MainContract";
 import { useTonClient } from "./useTonClient";
 import { useAsyncInitialize } from "./useAsyncInitialize";
-import { Address, OpenedContract } from "ton-core";
-import { toNano } from "ton-core";
+import { Address, OpenedContract} from "ton-core";
+import { toNano} from "ton-core";
 import { useTonConnect } from "./useTonConnect";
 
 export function useMainContract() {
@@ -24,9 +24,9 @@ export function useMainContract() {
   const mainContract = useAsyncInitialize(async () => {
     if (!client) return;
     const contract = new MainContract(
-      Address.parse("0QDUmpYN6mzBj-xSBLqlyTxL768tqlqlqA4fqG8NXqejxXG4") // replace with your address from tutorial 2 step 8
+      Address.parse("0QDUmpYN6mzBj-xSBLqlyTxL768tqlqlqA4fqG8NXqejxXG4")
     );
-    return client.open(contract) as OpenedContract<MainContract>;
+    return client.open(contract) as OpenedContract<MainContract>;;
   }, [client]);
 
   useEffect(() => {
