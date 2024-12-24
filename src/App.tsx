@@ -39,7 +39,6 @@ function App() {
         throw new Error(`Server error: ${response.statusText}`);
       }
       console.log("WebApp version:", WebApp.version);
-      console.log("WebApp platform:", WebApp.platform);
 
       const data = await response.json(); 
       const invoiceLink = data.invoiceLink;
