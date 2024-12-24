@@ -51,16 +51,18 @@ function App() {
             console.log("Payment successful!");
             alert("Payment successful! Thank you.");
           } else if (status === "cancelled") {
-            console.log("Payment cancelled.");
-            alert("Payment cancelled.");
+            console.log("Payment was cancelled.");
+            alert("Payment was cancelled.");
           } else {
             console.log("Payment failed or closed.");
             alert("Payment failed or closed. Please try again.");
           }
         });
       } else {
-        console.warn("openInvoice not supported. Opening the link directly.");
-        // Fallback: Open the invoice link in a new tab
+        console.warn("openInvoice not supported. Opening invoice in a new browser tab.");
+        alert(
+          "Your Telegram app does not support in-app payments. The payment will open in your browser."
+        );
         window.open(invoiceLink, "_blank");
       }
     } catch (error) {
