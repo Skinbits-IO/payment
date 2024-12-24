@@ -38,7 +38,8 @@ function App() {
       if (!response.ok) {
         throw new Error(`Server error: ${response.statusText}`);
       }
-  
+      console.log(WebApp.version);
+
       const data = await response.json(); 
       const invoiceLink = data.invoiceLink;
       console.log("Invoice link received:", invoiceLink);
