@@ -45,13 +45,24 @@ function App() {
       console.log("Invoice link received:", invoiceLink);
   
       // 2. Use Telegram WebApp SDK to open the invoice
-      WebApp.openInvoice(invoiceLink, (status) => {
-        console.log("Payment status:", status);
-        if (status === "paid") {
-          console.log("User has paid for:", skinName);
-          // You can do post-payment logic here.
-        }
-      });
+      if (WebApp.openInvoice) {
+        WebApp.openInvoice(invoiceLink, (status) => {
+          if (status === "paid") {
+            console.log("Payment successful!");
+            alert("Payment successful! Thank you.");
+          } else if (status === "cancelled") {
+            console.log("Payment cancelled.");
+            alert("Payment cancelled.");
+          } else {
+            console.log("Payment failed or closed.");
+            alert("Payment failed or closed. Please try again.");
+          }
+        });
+      } else {
+        console.warn("openInvoice not supported. Opening the link directly.");
+        // Fallback: Open the invoice link in a new tab
+        window.open(invoiceLink, "_blank");
+      }
     } catch (error) {
       console.error("Error in handlePayWithStars:", error);
     }
