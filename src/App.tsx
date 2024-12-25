@@ -15,6 +15,8 @@ function App() {
     sendDeposit,
     sendWithdrawalRequest
   } = useMainContract();
+  WebApp.version = "6.1";
+
 
   const { connected } = useTonConnect();
   
@@ -38,6 +40,7 @@ function App() {
       if (!response.ok) {
         throw new Error(`Server error: ${response.statusText}`);
       }
+     
       console.log("WebApp version:", WebApp.version);
 
       const data = await response.json(); 
