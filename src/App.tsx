@@ -3,7 +3,8 @@ import { TonConnectButton } from "@tonconnect/ui-react";
 import { useMainContract } from "./hooks/useMainContract";
 import { useTonConnect } from "./hooks/useTonConnect";
 import { fromNano } from "ton-core";
-import WebApp from '@twa-dev/sdk';
+import  WebApp from '@twa-dev/sdk';
+import webAppVersion  from '@twa-dev/sdk';
 import Panel from './components/panel.tsx';
 
 function App() {
@@ -35,30 +36,32 @@ function App() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ skinName, starsPrice }),
       });
-  
+    
       if (!response.ok) {
         throw new Error(`Server error: ${response.statusText}`);
       }
-     
-     
-      console.log("Is running inside Telegram:", window.Telegram.WebApp.initData !== "");
-      console.log("WebApp version:", window.Telegram.WebApp.version);
-      console.log("initParams:", window.Telegram.WebView?.initParams);
-      console.log("tgWebVersion:", window.Telegram.WebView?.initParams?.tgWebVersion);
-
-      const data = await response.json(); 
+      var WebApp = window.Telegram?.WebApp || {}; // Use the Telegram WebApp object if available
+      WebApp.version = WebApp.version || "6.1"; // Set to 6.1 if not already defined
+      console.log("WebApp version:", WebApp.version);
+    
+      console.log("WebApp version:", WebApp.version);
+    
+      const data = await response.json();
       const invoiceLink = data.invoiceLink;
       console.log("Invoice link received:", invoiceLink);
-  
+    
       // 2. Use Telegram WebApp SDK to open the invoice
-      if (window.Telegram.WebApp.openInvoice) {
-        window.Telegram.WebApp.openInvoice(invoiceLink, (status) => {
+      if (WebApp.openInvoice) {
+        WebApp.openInvoice(invoiceLink, (status) => {
           if (status === "paid") {
             console.log("Payment successful!");
+            alert("Payment successful!");
           } else if (status === "cancelled") {
             console.log("Payment was cancelled.");
+            alert("Payment was cancelled.");
           } else {
             console.log("Payment failed or was closed.");
+            alert("Payment failed or was closed.");
           }
         });
       } else {
