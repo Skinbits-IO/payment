@@ -4,7 +4,6 @@ import { useMainContract } from "./hooks/useMainContract";
 import { useTonConnect } from "./hooks/useTonConnect";
 import { fromNano } from "ton-core";
 import  WebApp from '@twa-dev/sdk';
-import webAppVersion  from '@twa-dev/sdk';
 import Panel from './components/panel.tsx';
 
 function App() {
