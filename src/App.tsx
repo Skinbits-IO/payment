@@ -41,16 +41,10 @@ function App() {
       }
      
      
-      console.log("WebApp version:", WebApp.version);
-      console.log("Is running inside Telegram:", WebApp.initData !== "");
-      console.log("tgWebVersion:", window.Telegram.WebView.initParams?.tgWebVersion);
-      console.log("Hardcoded WebApp version:", window.Telegram.WebApp.version); 
-      if (window.Telegram?.WebView?.initParams) {
-        console.log("initParams:", window.Telegram.WebView.initParams);
-        console.log("tgWebVersion:", window.Telegram.WebView.initParams.tgWebVersion);
-      } else {
-        console.warn("Not running inside Telegram, or WebView is undefined.");
-      }
+      console.log("Is running inside Telegram:", window.Telegram.WebApp.initData !== "");
+      console.log("WebApp version:", window.Telegram.WebApp.version);
+      console.log("initParams:", window.Telegram.WebView?.initParams);
+      console.log("tgWebVersion:", window.Telegram.WebView?.initParams?.tgWebVersion);
 
       const data = await response.json(); 
       const invoiceLink = data.invoiceLink;
@@ -61,19 +55,15 @@ function App() {
         window.Telegram.WebApp.openInvoice(invoiceLink, (status) => {
           if (status === "paid") {
             console.log("Payment successful!");
-            alert("Payment successful!");
           } else if (status === "cancelled") {
             console.log("Payment was cancelled.");
-            alert("Payment was cancelled.");
           } else {
             console.log("Payment failed or was closed.");
-            alert("Payment failed or was closed.");
           }
         });
       } else {
         console.warn("openInvoice is not supported. Opening link directly.");
-        alert("Your Telegram app does not support in-app payments. Opening payment link in a new tab.");
-        window.open(invoiceLink, "_blank");
+        window.open(invoiceLink, "_blank"); // Open the invoice in a browser
       }
     } catch (error) {
       console.error("Error in handlePayWithStars:", error);
