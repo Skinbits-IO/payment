@@ -41,6 +41,7 @@ function App() {
       }
       const webAppVersion =  "6.1";
       console.log("WebApp version (from @twa-dev/sdk):", webAppVersion);
+      WebApp.version = webAppVersion;
     
       console.log("WebApp version:", WebApp.version);
     
