@@ -39,7 +39,7 @@ function App() {
       if (!response.ok) {
         throw new Error(`Server error: ${response.statusText}`);
       }
-      const webAppVersion = WebApp.version || "6.1"; // Use 6.1 as a fallback for testing
+      const webAppVersion =  "6.1";
       console.log("WebApp version (from @twa-dev/sdk):", webAppVersion);
     
       console.log("WebApp version:", WebApp.version);
