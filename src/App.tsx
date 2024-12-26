@@ -39,9 +39,8 @@ function App() {
       if (!response.ok) {
         throw new Error(`Server error: ${response.statusText}`);
       }
-      var WebApp = window.Telegram?.WebApp || {}; // Use the Telegram WebApp object if available
-      WebApp.version = WebApp.version || "6.1"; // Set to 6.1 if not already defined
-      console.log("WebApp version:", WebApp.version);
+      const webAppVersion = WebApp.version || "6.1"; // Use 6.1 as a fallback for testing
+      console.log("WebApp version (from @twa-dev/sdk):", webAppVersion);
     
       console.log("WebApp version:", WebApp.version);
     
