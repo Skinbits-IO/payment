@@ -16,7 +16,7 @@ function App() {
     sendWithdrawalRequest
   } = useMainContract();
 
-
+  
   const { connected } = useTonConnect();
   
   console.log("Is connected:", connected);
@@ -42,14 +42,16 @@ function App() {
      
       console.log("WebApp version:", WebApp.version);
       console.log("Is running inside Telegram:", WebApp.initData !== "");
+      console.log("tgWebVersion:", window.Telegram.WebView.initParams?.tgWebVersion);
+      console.log("Hardcoded WebApp version:", window.Telegram.WebApp.version); 
 
       const data = await response.json(); 
       const invoiceLink = data.invoiceLink;
       console.log("Invoice link received:", invoiceLink);
   
       // 2. Use Telegram WebApp SDK to open the invoice
-      if (WebApp.openInvoice) {
-        WebApp.openInvoice(invoiceLink, (status) => {
+      if (window.Telegram.WebApp.openInvoice) {
+        window.Telegram.WebApp.openInvoice(invoiceLink, (status) => {
           if (status === "paid") {
             console.log("Payment successful!");
             alert("Payment successful!");
