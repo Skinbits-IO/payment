@@ -52,20 +52,18 @@ function App() {
         WebApp.openInvoice(invoiceLink, (status) => {
           if (status === "paid") {
             console.log("Payment successful!");
-            alert("Payment successful! Thank you.");
+            alert("Payment successful!");
           } else if (status === "cancelled") {
             console.log("Payment was cancelled.");
             alert("Payment was cancelled.");
           } else {
-            console.log("Payment failed or closed.");
-            alert("Payment failed or closed. Please try again.");
+            console.log("Payment failed or was closed.");
+            alert("Payment failed or was closed.");
           }
         });
       } else {
-        console.warn("openInvoice not supported. Opening invoice in a new browser tab.");
-        alert(
-          "Your Telegram app does not support in-app payments. The payment will open in your browser."
-        );
+        console.warn("openInvoice is not supported. Opening link directly.");
+        alert("Your Telegram app does not support in-app payments. Opening payment link in a new tab.");
         window.open(invoiceLink, "_blank");
       }
     } catch (error) {
