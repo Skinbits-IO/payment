@@ -40,10 +40,17 @@ function App() {
         throw new Error(`Server error: ${response.statusText}`);
       }
      
+     
       console.log("WebApp version:", WebApp.version);
       console.log("Is running inside Telegram:", WebApp.initData !== "");
       console.log("tgWebVersion:", window.Telegram.WebView.initParams?.tgWebVersion);
       console.log("Hardcoded WebApp version:", window.Telegram.WebApp.version); 
+      if (window.Telegram?.WebView?.initParams) {
+        console.log("initParams:", window.Telegram.WebView.initParams);
+        console.log("tgWebVersion:", window.Telegram.WebView.initParams.tgWebVersion);
+      } else {
+        console.warn("Not running inside Telegram, or WebView is undefined.");
+      }
 
       const data = await response.json(); 
       const invoiceLink = data.invoiceLink;
