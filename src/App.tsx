@@ -15,7 +15,6 @@ function App() {
     sendDeposit,
     sendWithdrawalRequest
   } = useMainContract();
-  WebApp.version = "6.1";
 
 
   const { connected } = useTonConnect();
