@@ -39,34 +39,39 @@ function App() {
       if (!response.ok) {
         throw new Error(`Server error: ${response.statusText}`);
       }
-      const webAppVersion =  "6.1";
-      console.log("WebApp version (from @twa-dev/sdk):", webAppVersion);
-      WebApp.version = webAppVersion;
-    
-      console.log("WebApp version:", WebApp.version);
-    
-      const data = await response.json();
-      const invoiceLink = data.invoiceLink;
-      console.log("Invoice link received:", invoiceLink);
-    
-      // 2. Use Telegram WebApp SDK to open the invoice
-      if (WebApp.openInvoice) {
-        WebApp.openInvoice(invoiceLink, (status) => {
-          if (status === "paid") {
-            console.log("Payment successful!");
-            alert("Payment successful!");
-          } else if (status === "cancelled") {
-            console.log("Payment was cancelled.");
-            alert("Payment was cancelled.");
-          } else {
-            console.log("Payment failed or was closed.");
-            alert("Payment failed or was closed.");
-          }
-        });
+      const TelegramWebApp = window.Telegram?.WebApp || {};
+  
+  // Check for version
+  const actualVersion = TelegramWebApp.version || "6.0";
+  console.log("Actual WebApp version:", actualVersion);
+
+  // Simulate WebApp version 6.1 for testing
+  const simulatedVersion = "6.1";
+  TelegramWebApp.version = actualVersion === "6.0" ? simulatedVersion : actualVersion;
+  console.log("Simulated WebApp version:", TelegramWebApp.version);
+
+  const data = await response.json();
+  const invoiceLink = data.invoiceLink;
+  console.log("Invoice link received:", invoiceLink);
+
+  // 2. Use the Telegram WebApp SDK to open the invoice
+  if (TelegramWebApp.openInvoice) {
+    TelegramWebApp.openInvoice(invoiceLink, (status) => {
+      if (status === "paid") {
+        console.log("Payment successful!");
+        alert("Payment successful!");
+      } else if (status === "cancelled") {
+        console.log("Payment was cancelled.");
+        alert("Payment was cancelled.");
       } else {
-        console.warn("openInvoice is not supported. Opening link directly.");
-        window.open(invoiceLink, "_blank"); // Open the invoice in a browser
+        console.log("Payment failed or was closed.");
+        alert("Payment failed or was closed.");
       }
+    });
+  } else {
+    console.warn("openInvoice is not supported. Opening link directly.");
+    window.open(invoiceLink, "_blank");
+  }
     } catch (error) {
       console.error("Error in handlePayWithStars:", error);
     }
