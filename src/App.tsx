@@ -6,6 +6,7 @@ import { fromNano } from "ton-core";
 import  WebApp from '@twa-dev/sdk';
 import Panel from './components/panel.tsx';
 
+
 function App() {
   const {
     contract_address,
