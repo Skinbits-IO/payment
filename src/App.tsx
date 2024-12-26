@@ -42,6 +42,7 @@ function App() {
       }
      
       console.log("WebApp version:", WebApp.version);
+      console.log("Is running inside Telegram:", WebApp.initData !== "");
 
       const data = await response.json(); 
       const invoiceLink = data.invoiceLink;
