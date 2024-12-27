@@ -26,7 +26,7 @@ export function useMainContract() {
     const contract = new MainContract(
       Address.parse("0QDUmpYN6mzBj-xSBLqlyTxL768tqlqlqA4fqG8NXqejxXG4")
     );
-    return client.open(contract) as OpenedContract<MainContract>;;
+    return client.open(contract) as OpenedContract<MainContract>;
   }, [client]);
 
   useEffect(() => {
@@ -65,4 +65,4 @@ export function useMainContract() {
       );
     }
   };
-}
+} 
