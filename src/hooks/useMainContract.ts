@@ -6,8 +6,7 @@ import { Address, OpenedContract} from "ton-core";
 import { toNano} from "ton-core";
 import { useTonConnect } from "./useTonConnect";
 
-const client = useTonClient();
-console.log("TonClient instance:", client);
+
 export function useMainContract() {
   const client = useTonClient();
   const { sender }= useTonConnect();
@@ -28,7 +27,7 @@ export function useMainContract() {
     const contract = new MainContract(
        Address.parse("0QDUmpYN6mzBj-xSBLqlyTxL768tqlqlqA4fqG8NXqejxXG4")
     );
-    return client.open(contract) as OpenedContract<MainContract>;
+   return client.open(contract) as OpenedContract<MainContract>;
 
   }, [client]);
 
