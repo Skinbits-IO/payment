@@ -6,8 +6,8 @@ import { Address, OpenedContract} from "ton-core";
 import { toNano} from "ton-core";
 import { useTonConnect } from "./useTonConnect";
 
-
-
+const client = useTonClient();
+console.log("TonClient instance:", client);
 export function useMainContract() {
   const client = useTonClient();
   const { sender }= useTonConnect();
