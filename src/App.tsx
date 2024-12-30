@@ -1,5 +1,5 @@
 import "./App.css";
-import React,  { useState, useEffect } from "react";
+import React  from "react";
 import { TonConnectButton } from "@tonconnect/ui-react";
 import { useMainContract } from "./hooks/useMainContract";
 import { useTonConnect } from "./hooks/useTonConnect";
@@ -21,12 +21,12 @@ function App() {
   
   const { connected } = useTonConnect();
 
-  const [logs, setLogs] = useState<string[]>([]);
+  const [logs, setLogs] = React.useState<string[]>([]);
   const log = (message: string) => {
     console.log(message);
     setLogs((prevLogs) => [...prevLogs, message]);
   };
-  useEffect(() => {
+  React.useEffect(() => {
     // Log WebApp version and platform at the start
     log(`WebApp Version: ${WebApp.version || "Unknown"}`);
     log(`Platform: ${WebApp.platform || "Unknown"}`);
@@ -123,6 +123,12 @@ function App() {
               onPayWithStars={handlePayWithStars}
             />
           </div>
+          <div>
+            <h3>Logs</h3>
+              <ul>
+                {logs.map((log, index) => (<li key={index}>{log}</li>))}
+              </ul>
+            </div>
           <div className="Card">
             <b>WebApp Version</b>
             <div>{WebApp.version || "Unknown"}</div>
