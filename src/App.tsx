@@ -40,11 +40,6 @@ function App() {
       if (!response.ok) {
         throw new Error(`Server error: ${response.statusText}`);
       }
-      const customWebAppVersion = "6.1"; // Simulate version for testing
-      console.log("Custom WebApp version (for testing):", customWebAppVersion);
-
-      // Log the actual WebApp version
-      console.log("Actual WebApp version (from @twa-dev/sdk):", WebApp.version);
 
       const data = await response.json();
       const invoiceLink = data.invoiceLink;
@@ -116,6 +111,21 @@ function App() {
               onPayWithStars={handlePayWithStars}
             />
           </div>
+          <div className="Card">
+              <b>WebApp Version</b>
+              <div>{WebApp.version}</div>
+
+              <b>Platform</b>
+              <div>{WebApp.platform}</div>
+
+              <b>Our Contract Address</b>
+              <div className="Hint">{contract_address?.slice(0, 30) + "..."}</div>
+
+              <b>Our Contract Balance</b>
+              {contract_balance && (
+                <div className="Hint">{fromNano(contract_balance)}</div>
+              )}
+            </div>
 
           <div>
             <div className='Card'>
