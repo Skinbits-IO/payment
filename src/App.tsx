@@ -1,4 +1,5 @@
 import "./App.css";
+import React,  { useState, useEffect } from "react";
 import { TonConnectButton } from "@tonconnect/ui-react";
 import { useMainContract } from "./hooks/useMainContract";
 import { useTonConnect } from "./hooks/useTonConnect";
@@ -19,6 +20,17 @@ function App() {
 
   
   const { connected } = useTonConnect();
+
+  const [logs, setLogs] = useState<string[]>([]);
+  const log = (message: string) => {
+    console.log(message);
+    setLogs((prevLogs) => [...prevLogs, message]);
+  };
+  useEffect(() => {
+    // Log WebApp version and platform at the start
+    log(`WebApp Version: ${WebApp.version || "Unknown"}`);
+    log(`Platform: ${WebApp.platform || "Unknown"}`);
+  }, []);
   
   console.log("Is connected:", connected);
 
@@ -112,20 +124,18 @@ function App() {
             />
           </div>
           <div className="Card">
-              <b>WebApp Version</b>
-              <div>{WebApp.version}</div>
+            <b>WebApp Version</b>
+            <div>{WebApp.version || "Unknown"}</div>
 
-              <b>Platform</b>
-              <div>{WebApp.platform}</div>
+            <b>Platform</b>
+            <div>{WebApp.platform || "Unknown"}</div>
 
-              <b>Our Contract Address</b>
-              <div className="Hint">{contract_address?.slice(0, 30) + "..."}</div>
+            <b>Our Contract Address</b>
+            <div className="Hint">{contract_address?.slice(0, 30) + "..."}</div>
 
-              <b>Our Contract Balance</b>
-              {contract_balance && (
-                <div className="Hint">{fromNano(contract_balance)}</div>
-              )}
-            </div>
+            <b>Our Contract Balance</b>
+            {contract_balance && <div className="Hint">{fromNano(contract_balance)}</div>}
+          </div>
 
           <div>
             <div className='Card'>
