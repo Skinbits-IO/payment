@@ -28,6 +28,7 @@ function App() {
   };
   React.useEffect(() => {
     // Log WebApp version and platform at the start
+  
     log(`WebApp Version: ${WebApp.version || "Unknown"}`);
     log(`Platform: ${WebApp.platform || "Unknown"}`);
   }, []);
@@ -36,12 +37,15 @@ function App() {
 
   const handlePayWithTON = (skinName: string, tonPrice: number) => {
     console.log(`Paying with TON for ${skinName}, price: ${tonPrice} TON`);
+    log(`Paying with TON for ${skinName}, price: ${tonPrice} TON`);
   };
 
   const handlePayWithStars = async (skinName: string, starsPrice: number) => {
     console.log(`Paying with Stars for ${skinName}, price: ${starsPrice} XTR`);
+    log(`Paying with Stars for ${skinName}, price: ${starsPrice} XTR`);
   
     try {
+      log("Sending request to create invoice...");
       // 1. Call your server's /create-invoice endpoint
       const response = await fetch("http://localhost:3000/create-invoice", {
         method: "POST",
@@ -56,29 +60,38 @@ function App() {
       const data = await response.json();
       const invoiceLink = data.invoiceLink;
       console.log("Invoice link received:", invoiceLink);
+      log(`Invoice link received: ${invoiceLink}`);
 
       // 2. Use Telegram WebApp SDK to open the invoice
       if (WebApp.openInvoice) {
         WebApp.openInvoice(invoiceLink, (status) => {
           if (status === "paid") {
+            log("Payment successful!");
             console.log("Payment successful!");
             alert("Payment successful!");
           } else if (status === "cancelled") {
+            log("Payment was cancelled.");
             console.log("Payment was cancelled.");
             alert("Payment was cancelled.");
           } else {
+            log("Payment failed or was closed.");
             console.log("Payment failed or was closed.");
             alert("Payment failed or was closed.");
           }
         });
       } else {
+        log("openInvoice is not supported. Opening link in a new tab.");
         console.warn("openInvoice is not supported. Opening link directly.");
         window.open(invoiceLink, "_blank"); // Open the invoice in a browser
       }
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      log(`Error in handlePayWithStars: ${errorMessage}`);
       console.error("Error in handlePayWithStars:", error);
     }
   };
+
+  
   
 
 
