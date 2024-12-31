@@ -47,7 +47,7 @@ function App() {
     try {
       log("Sending request to create invoice...");
       // 1. Call your server's /create-invoice endpoint
-      const response = await fetch("http://localhost:3000//create-invoice", {
+      const response = await fetch("http://localhost:3000/create-invoice", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ skinName, starsPrice }),
