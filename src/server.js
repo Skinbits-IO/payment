@@ -5,7 +5,11 @@ import { botApi } from './tg_bot/botApi.js';
 
 const app = express();
 app.use(express.json());
-app.use(cors()); 
+app.use(
+  cors({
+    origin: "https://artyomcha.github.io", // Replace with your frontend's URL
+  })
+);
 
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.url}`);
