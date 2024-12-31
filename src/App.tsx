@@ -82,7 +82,7 @@ function App() {
       } else {
         log("openInvoice is not supported. Opening link in a new tab.");
         console.warn("openInvoice is not supported. Opening link directly.");
-        //window.open(invoiceLink, "_blank"); // Open the invoice in a browser
+        window.open(invoiceLink, "_blank"); // Open the invoice in a browser
       }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : String(error);
