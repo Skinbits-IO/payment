@@ -2,7 +2,6 @@ import dotenv from 'dotenv';
 import { Telegraf } from 'telegraf';
 import crypto from 'crypto';
 import bigInt from 'big-integer';
-import { sha256 } from '@openpgp/crypto';
 
 dotenv.config();
 
