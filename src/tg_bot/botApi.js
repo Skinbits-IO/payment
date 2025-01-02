@@ -54,21 +54,15 @@ async function createInvoiceLink(
 async function getPasswordParams() {
   try {
     const passwordDetails = await bot.telegram.callApi('account.getPassword');
-    return passwordDetails;
+    return passwordDetails; // Contains srp_id, salt, and srp_B
   } catch (error) {
     console.error('Error fetching password details:', error);
     throw error;
   }
 }
 
-
-/**
- * Generates SRP authentication using password and parameters.
- */
 /**
  * Create an SRP password check payload for Telegram's payments API.
- * @param {string} password - The user's 2FA password.
- * @returns {Promise<object>} - SRP parameters for Telegram's API.
  */
 const createPasswordCheckPayload = async (password, passwordParams) => {
   const { srp_id, srp_B, current_salt } = passwordParams;
@@ -82,44 +76,42 @@ const createPasswordCheckPayload = async (password, passwordParams) => {
 
   const salt = Buffer.from(current_salt, 'base64');
   const passwordBytes = Buffer.from(password, 'utf-8');
-  const passwordHash = await sha256(Buffer.concat([salt, passwordBytes]));
+  const passwordHash = crypto.createHash('sha256').update(Buffer.concat([salt, passwordBytes])).digest();
 
   const x = bigInt(passwordHash.toString('hex'), 16);
   const a = bigInt(crypto.randomBytes(256).toString('hex'), 16);
   const A = g.modPow(a, N);
 
   const B = bigInt(srp_B, 16);
-  const u = bigInt((await sha256(Buffer.concat([A.toArray(256).value, B.toArray(256).value]))).toString('hex'), 16);
+  const uHash = crypto.createHash('sha256').update(Buffer.concat([A.toArray(256).value, B.toArray(256).value])).digest();
+  const u = bigInt(uHash.toString('hex'), 16);
 
   const S = B.subtract(g.modPow(x, N)).modPow(a.add(u.multiply(x)), N);
-  const M1 = await sha256(Buffer.concat([A.toArray(256).value, B.toArray(256).value, S.toArray(256).value]));
+  const M1Hash = crypto.createHash('sha256').update(Buffer.concat([A.toArray(256).value, B.toArray(256).value, S.toArray(256).value])).digest();
 
   return {
     _: 'inputCheckPasswordSRP',
     srp_id,
     A: A.toString(16),
-    M1: M1.toString('hex'),
+    M1: M1Hash.toString('hex'),
   };
 };
 
-
 /**
  * Get the Stars revenue withdrawal URL.
- *
- * @param {string} channelId - The ID of the bot or channel.
- * @param {number} starsAmount - The amount of Stars to withdraw.
- * @param {string} password - The 2FA password.
- * @returns {Promise<string>} - The withdrawal URL.
  */
 async function getStarsRevenueWithdrawalUrl(starsAmount, password) {
   try {
+    // Fetch password parameters
     const passwordParams = await getPasswordParams();
+
+    // Generate SRP password payload
     const passwordPayload = await createPasswordCheckPayload(password, passwordParams);
 
+    // Call Telegram's payments.getStarsRevenueWithdrawalUrl API
     const response = await bot.telegram.callApi('payments.getStarsRevenueWithdrawalUrl', {
       peer: {
-        _: 'inputPeerUser',
-        user_id: process.env.BOT_ID,
+        _: 'inputPeerSelf',
       },
       stars: starsAmount,
       password: passwordPayload,
@@ -132,10 +124,9 @@ async function getStarsRevenueWithdrawalUrl(starsAmount, password) {
   }
 }
 
-// Export all methods or objects related to your bot
+// Export botApi
 export const botApi = {
-  bot,                  // The Telegraf bot instance (if needed elsewhere)
-  createInvoiceLink,    // Function to create invoice links
-  getStarsRevenueWithdrawalUrl,  // Function to generate withdrawal URLs
+  bot,
+  createInvoiceLink,
+  getStarsRevenueWithdrawalUrl,
 };
-
