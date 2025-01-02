@@ -34,6 +34,20 @@ app.post('/create-invoice', async (req, res) => {
   }
 });
 
+app.post('/withdraw-stars', async (req, res) => {
+  try {
+    const { starsAmount, password } = req.body; // User specifies amount and their 2FA password
+    
+    // Call a function to get the withdrawal URL
+    const withdrawalUrl = await botApi.getStarsRevenueWithdrawalUrl(starsAmount, password);
+    
+    res.json({ withdrawalUrl });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to withdraw Stars revenue' });
+  }
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);

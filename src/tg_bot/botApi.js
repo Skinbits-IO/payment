@@ -45,10 +45,61 @@ async function createInvoiceLink(
     throw error;
   }
 }
+/**
+ * Fetches 2FA password parameters from Telegram.
+ */
+async function getPasswordParams() {
+  try {
+    const passwordDetails = await bot.telegram.callApi('account.getPassword');
+    return passwordDetails; // Contains srp_id, salt, and srp_B
+  } catch (error) {
+    console.error('Error fetching password details:', error);
+    throw error;
+  }
+}
+
+/**
+ * Generates SRP authentication using password and parameters.
+ */
+async function generateSRP(password, params) {
+  const { srp_id, salt } = params;
+
+  // Example SRP computation (use a library like `secure-remote-password` for production)
+  const A = crypto.randomBytes(32).toString('hex'); // Placeholder for SRP-A computation
+  const M1 = crypto.randomBytes(32).toString('hex'); // Placeholder for SRP-M1 computation
+
+  return { srp_id, A, M1 };
+}
+
+/**
+ * Generates a withdrawal URL for Stars.
+ *
+ * @param {number} starsAmount The amount of stars to withdraw.
+ * @param {string} password    The user's 2FA password.
+ * @returns {Promise<string>} The withdrawal URL.
+ */
+async function getStarsWithdrawalUrl(starsAmount, password) {
+  try {
+    const passwordParams = await getPasswordParams();
+    const srpPassword = await generateSRP(password, passwordParams);
+
+    const response = await bot.telegram.callApi('payments.getStarsRevenueWithdrawalUrl', {
+      peer: { type: 'channel', id: process.env.CHANNEL_ID }, // Replace with your channel/bot ID
+      stars: starsAmount,
+      password: srpPassword,
+    });
+
+    return response.url; // Withdrawal URL
+  } catch (error) {
+    console.error('Error generating withdrawal URL:', error);
+    throw error;
+  }
+}
 
 // Export all methods or objects related to your bot
 export const botApi = {
-  bot,             // The Telegraf bot instance (if needed elsewhere)
-  createInvoiceLink
+  bot,                  // The Telegraf bot instance (if needed elsewhere)
+  createInvoiceLink,    // Function to create invoice links
+  getStarsWithdrawalUrl // Function to generate withdrawal URLs
 };
 

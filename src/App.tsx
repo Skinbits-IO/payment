@@ -22,6 +22,9 @@ function App() {
   const { connected } = useTonConnect();
 
   const [logs, setLogs] = React.useState<string[]>([]);
+  const [starsAmount, setStarsAmount] = React.useState<number>(0);
+  const [password, setPassword] = React.useState<string>("");
+
   const log = (message: string) => {
     console.log(message);
     setLogs((prevLogs) => [...prevLogs, message]);
@@ -91,6 +94,37 @@ function App() {
     }
   };
 
+  const handleWithdrawStars = async (starsAmount: number, password: string) => {
+    console.log(`Requesting withdrawal of ${starsAmount} Stars`);
+    log(`Requesting withdrawal of ${starsAmount} Stars`);
+    try {
+      // Call the server's /withdraw-stars endpoint
+      const response = await fetch("https://4721-217-61-226-17.ngrok-free.app/withdraw-stars", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ starsAmount, password }),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Server error: ${response.statusText}`);
+      }
+  
+      const data = await response.json();
+      const withdrawalUrl = data.withdrawalUrl;
+      console.log("Withdrawal URL received:", withdrawalUrl);
+      log(`Withdrawal URL received: ${withdrawalUrl}`);
+      
+      // Open the Fragment withdrawal page in a new tab
+      window.open(withdrawalUrl, "_blank");
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      log(`Error in handleWithdrawStars: ${errorMessage}`);
+      console.error("Error in handleWithdrawStars:", error);
+      alert(`Failed to request withdrawal: ${errorMessage}`);
+    }
+  };
+
+
   
   
 
@@ -154,6 +188,27 @@ function App() {
 
             <b>Our Contract Balance</b>
             {contract_balance && <div className="Hint">{fromNano(contract_balance)}</div>}
+          </div>
+
+          <div className="Card">
+              <b>Withdraw Stars</b>
+              <div>
+                <input
+                  type="number"
+                  placeholder="Stars Amount"
+                  value={starsAmount} // Bind state
+                  onChange={(e) => setStarsAmount(Number(e.target.value))} // Update state
+                />
+                <input
+                  type="password"
+                  placeholder="2FA Password"
+                  value={password} // Bind state
+                  onChange={(e) => setPassword(e.target.value)} // Update state
+                />
+                <button onClick={() => handleWithdrawStars(starsAmount, password)}>
+                  Withdraw Stars
+                </button>
+              </div>
           </div>
 
           <div>
