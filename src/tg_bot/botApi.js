@@ -1,5 +1,8 @@
 import dotenv from 'dotenv';
 import { Telegraf } from 'telegraf';
+import crypto from 'crypto';
+import bigInt from 'big-integer';
+import { sha256 } from '@openpgp/crypto';
 
 dotenv.config();
 
@@ -51,12 +54,13 @@ async function createInvoiceLink(
 async function getPasswordParams() {
   try {
     const passwordDetails = await bot.telegram.callApi('account.getPassword');
-    return passwordDetails; // Contains srp_id, salt, and srp_B
+    return passwordDetails;
   } catch (error) {
     console.error('Error fetching password details:', error);
     throw error;
   }
 }
+
 
 /**
  * Generates SRP authentication using password and parameters.
@@ -66,15 +70,38 @@ async function getPasswordParams() {
  * @param {string} password - The user's 2FA password.
  * @returns {Promise<object>} - SRP parameters for Telegram's API.
  */
-async function createPasswordCheckPayload(password) {
-  // Replace this with your implementation for generating SRP parameters.
-  // Example dummy implementation for development.
+const createPasswordCheckPayload = async (password, passwordParams) => {
+  const { srp_id, srp_B, current_salt } = passwordParams;
+
+  const g = bigInt(2);
+  const N = bigInt(
+    'AC6BDB41324A9A9BF166DE5E1389582FAF72B665198FFB3E2C6D9A8C12AD3D9A86917F1FE55E7182967C2E4D' +
+    'FCE10D86AA6D5FDEDD532F3A942D5EEC0A3C9CEFAF9643DB81E2AFCBDC7D465F20AB4FA91852C1696F769A9A2C',
+    16
+  );
+
+  const salt = Buffer.from(current_salt, 'base64');
+  const passwordBytes = Buffer.from(password, 'utf-8');
+  const passwordHash = await sha256(Buffer.concat([salt, passwordBytes]));
+
+  const x = bigInt(passwordHash.toString('hex'), 16);
+  const a = bigInt(crypto.randomBytes(256).toString('hex'), 16);
+  const A = g.modPow(a, N);
+
+  const B = bigInt(srp_B, 16);
+  const u = bigInt((await sha256(Buffer.concat([A.toArray(256).value, B.toArray(256).value]))).toString('hex'), 16);
+
+  const S = B.subtract(g.modPow(x, N)).modPow(a.add(u.multiply(x)), N);
+  const M1 = await sha256(Buffer.concat([A.toArray(256).value, B.toArray(256).value, S.toArray(256).value]));
+
   return {
-    srp_id: crypto.randomBytes(16).toString('hex'),
-    A: crypto.randomBytes(256).toString('hex'), // Replace with actual logic
-    M1: crypto.randomBytes(256).toString('hex'),
+    _: 'inputCheckPasswordSRP',
+    srp_id,
+    A: A.toString(16),
+    M1: M1.toString('hex'),
   };
-}
+};
+
 
 /**
  * Get the Stars revenue withdrawal URL.
@@ -84,19 +111,21 @@ async function createPasswordCheckPayload(password) {
  * @param {string} password - The 2FA password.
  * @returns {Promise<string>} - The withdrawal URL.
  */
-async function getStarsRevenueWithdrawalUrl(channelId, starsAmount, password) {
+async function getStarsRevenueWithdrawalUrl(starsAmount, password) {
   try {
-    // Generate SRP password payload
-    const passwordPayload = await createPasswordCheckPayload(password);
+    const passwordParams = await getPasswordParams();
+    const passwordPayload = await createPasswordCheckPayload(password, passwordParams);
 
-    // Call Telegram's payments.getStarsRevenueWithdrawalUrl API
     const response = await bot.telegram.callApi('payments.getStarsRevenueWithdrawalUrl', {
-      peer: { type: 'channel', id: channelId },
+      peer: {
+        _: 'inputPeerUser',
+        user_id: process.env.BOT_ID,
+      },
       stars: starsAmount,
       password: passwordPayload,
     });
 
-    return response.url; // The URL to the withdrawal page
+    return response.url;
   } catch (error) {
     console.error('Error in getStarsRevenueWithdrawalUrl:', error);
     throw error;
