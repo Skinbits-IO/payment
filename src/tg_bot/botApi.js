@@ -78,20 +78,21 @@ async function generateSRP(password, params) {
  * @param {string} password    The user's 2FA password.
  * @returns {Promise<string>} The withdrawal URL.
  */
-async function getStarsWithdrawalUrl(starsAmount, password) {
+async function getStarsRevenueWithdrawalUrl(channelId, starsAmount, password) {
   try {
-    const passwordParams = await getPasswordParams();
-    const srpPassword = await generateSRP(password, passwordParams);
+    // Generate SRP password payload
+    const passwordPayload = await createPasswordCheckPayload(password);
 
+    // Call Telegram's payments.getStarsRevenueWithdrawalUrl API
     const response = await bot.telegram.callApi('payments.getStarsRevenueWithdrawalUrl', {
-      peer: { type: 'channel', id: process.env.CHANNEL_ID }, // Replace with your channel/bot ID
+      peer: { type: 'channel', id: channelId },
       stars: starsAmount,
-      password: srpPassword,
+      password: passwordPayload,
     });
 
-    return response.url; // Withdrawal URL
+    return response.url; // The URL to the withdrawal page
   } catch (error) {
-    console.error('Error generating withdrawal URL:', error);
+    console.error('Error in getStarsRevenueWithdrawalUrl:', error);
     throw error;
   }
 }
@@ -100,6 +101,6 @@ async function getStarsWithdrawalUrl(starsAmount, password) {
 export const botApi = {
   bot,                  // The Telegraf bot instance (if needed elsewhere)
   createInvoiceLink,    // Function to create invoice links
-  getStarsWithdrawalUrl // Function to generate withdrawal URLs
+  getStarsRevenueWithdrawalUrl,  // Function to generate withdrawal URLs
 };
 
