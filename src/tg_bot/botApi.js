@@ -55,7 +55,11 @@ async function getPasswordParams() {
     const passwordDetails = await bot.telegram.callApi('account.getPassword');
     console.log('Password Details Response:', passwordDetails); // Log the full response
 
-    if (!passwordDetails || !passwordDetails.srp_id || !passwordDetails.srp_B || !passwordDetails.current_salt) {
+    if (!passwordDetails) {
+      throw new Error('No response from account.getPassword API. Check bot permissions or API availability.');
+    }
+
+    if (!passwordDetails.srp_id || !passwordDetails.srp_B || !passwordDetails.current_salt) {
       throw new Error('Missing required fields in password details response');
     }
 
