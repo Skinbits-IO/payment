@@ -53,6 +53,12 @@ async function createInvoiceLink(
 async function getPasswordParams() {
   try {
     const passwordDetails = await bot.telegram.callApi('account.getPassword');
+    console.log('Password Details Response:', passwordDetails); // Log the full response
+
+    if (!passwordDetails || !passwordDetails.srp_id || !passwordDetails.srp_B || !passwordDetails.current_salt) {
+      throw new Error('Missing required fields in password details response');
+    }
+
     return passwordDetails; // Contains srp_id, salt, and srp_B
   } catch (error) {
     console.error('Error fetching password details:', error);
@@ -116,6 +122,7 @@ async function getStarsRevenueWithdrawalUrl(starsAmount, password) {
       password: passwordPayload,
     });
 
+    console.log('Withdrawal URL Response:', response); // Log the raw response
     return response.url;
   } catch (error) {
     console.error('Error in getStarsRevenueWithdrawalUrl:', error);
