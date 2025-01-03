@@ -149,7 +149,7 @@ function App() {
               skinName="CS2 Skin 1"
               description="A cool skin for CS2 with excellent graphics and design."
               tonPrice={1.5}       // Price in TON
-              starsPrice={150}  // Price in TON
+              starsPrice={1}  // Price in TON
               onPayWithTON={handlePayWithTON}
               onPayWithStars={handlePayWithStars}
             />

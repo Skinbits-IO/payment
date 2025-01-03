@@ -51,13 +51,25 @@ async function createInvoiceLink(
  * Fetches 2FA password parameters from Telegram.
  */
 async function getPasswordParams() {
-  // Mock data for testing purposes
-  return {
-    srp_id: '1234567890',
-    srp_B: 'abcdef1234567890',
-    current_salt: 'mockSaltBase64',
-  };
+  try {
+    const passwordDetails = await bot.telegram.callApi('account.getPassword');
+    console.log('Password Details Response:', passwordDetails); // Log the full response
+
+    if (!passwordDetails) {
+      throw new Error('No response from account.getPassword API. Check bot permissions or API availability.');
+    }
+
+    if (!passwordDetails.srp_id || !passwordDetails.srp_B || !passwordDetails.current_salt) {
+      throw new Error('Missing required fields in password details response');
+    }
+
+    return passwordDetails; // Contains srp_id, salt, and srp_B
+  } catch (error) {
+    console.error('Error fetching password details:', error);
+    throw error;
+  }
 }
+
 
 /**
  * Create an SRP password check payload for Telegram's payments API.
