@@ -49,7 +49,6 @@ async function createInvoiceLink(
 }
 
 
-// Handle pre_checkout_query
 bot.on('pre_checkout_query', async (ctx) => {
   try {
     const query = ctx.update.pre_checkout_query;
@@ -57,7 +56,7 @@ bot.on('pre_checkout_query', async (ctx) => {
 
     const { id, invoice_payload } = query;
 
-    // Validate the payload (you can expand validation as needed)
+    // Validate the payload
     if (invoice_payload !== '{}') {
       console.error('Invalid payload:', invoice_payload);
       await ctx.answerPreCheckoutQuery(false, 'Invalid payment payload.');
@@ -66,7 +65,7 @@ bot.on('pre_checkout_query', async (ctx) => {
 
     // Approve the payment
     await ctx.answerPreCheckoutQuery(true);
-    console.log('Payment approved for pre_checkout_query ID:', id);
+    console.log(`Payment approved for pre_checkout_query ID: ${id}`);
   } catch (error) {
     console.error('Error handling pre_checkout_query:', error);
     await ctx.answerPreCheckoutQuery(false, 'Failed to process payment.');
@@ -75,7 +74,7 @@ bot.on('pre_checkout_query', async (ctx) => {
 
 // Handle successful payments
 bot.on('successful_payment', (ctx) => {
-  console.log('Payment successful:', ctx.message.successful_payment);
+  console.log('Successful payment received:', ctx.message.successful_payment);
   ctx.reply('Thank you for your payment!');
 });
 
@@ -166,6 +165,17 @@ async function getStarsRevenueWithdrawalUrl(starsAmount, password) {
     throw error;
   }
 }
+
+(async () => {
+  try {
+    console.log('Starting bot...');
+    await bot.launch();
+    console.log('Bot is running!');
+  } catch (error) {
+    console.error('Failed to launch the bot:', error);
+    process.exit(1);
+  }
+})();
 
 // Export botApi
 export const botApi = {
