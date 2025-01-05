@@ -47,6 +47,40 @@ async function createInvoiceLink(
     throw error;
   }
 }
+
+
+bot.on('pre_checkout_query', async (ctx) => {
+  try {
+    console.log('Received pre_checkout_query:', ctx.update.pre_checkout_query);
+
+    const query = ctx.update.pre_checkout_query;
+
+    // Example: Validate the payload or price if necessary
+    const { id, from, invoice_payload } = query;
+
+    if (invoice_payload !== '{}') {
+      console.error('Invalid payload:', invoice_payload);
+      await ctx.answerPreCheckoutQuery(false, 'Invalid payment payload.');
+      return;
+    }
+
+    // Approve the payment
+    await ctx.answerPreCheckoutQuery(true);
+    console.log('Payment approved for:', from.username);
+  } catch (error) {
+    console.error('Error handling pre_checkout_query:', error);
+    await ctx.answerPreCheckoutQuery(false, 'Failed to process payment.');
+  }
+});
+
+/**
+ * Handle successful payments.
+ */
+bot.on('successful_payment', (ctx) => {
+  console.log('Payment successful:', ctx.message.successful_payment);
+  ctx.reply('Thank you for your payment!');
+});
+
 /**
  * Fetches 2FA password parameters from Telegram.
  */
