@@ -3,7 +3,7 @@ import React  from "react";
 import { TonConnectButton } from "@tonconnect/ui-react";
 import { useMainContract } from "./hooks/useMainContract";
 import { useTonConnect } from "./hooks/useTonConnect";
-import { fromNano } from "ton-core";
+import { fromNano, Address } from "ton-core";
 import  WebApp from '@twa-dev/sdk';
 import Panel from './components/panel.tsx';
 
@@ -19,7 +19,7 @@ function App() {
   } = useMainContract();
 
   
-  const { connected } = useTonConnect();
+  const { sender, connected } = useTonConnect();
 
   const [logs, setLogs] = React.useState<string[]>([]);
   const [starsAmount, setStarsAmount] = React.useState<number>(0);
@@ -38,9 +38,30 @@ function App() {
   
   console.log("Is connected:", connected);
 
-  const handlePayWithTON = (skinName: string, tonPrice: number) => {
-    console.log(`Paying with TON for ${skinName}, price: ${tonPrice} TON`);
-    log(`Paying with TON for ${skinName}, price: ${tonPrice} TON`);
+  const handlePayWithTON = async (skinName: string, tonPrice: number) => {
+    if (!connected) {
+      alert("Please connect your TON wallet before proceeding.");
+      return;
+    }
+  
+    try {
+      log(`Initiating payment with TON for ${skinName}, price: ${tonPrice} TON`);
+  
+      const transaction = {
+        to: Address.parse(process.env.REACT_APP_CONTRACT_ADDRESS!), // Convert the string to Address type
+        value: BigInt(tonPrice * 10 ** 9), // Convert TON to nanoTON
+        stateInit: null, // Optional state init for the contract
+        body: null, // Optional payload for contract interaction
+      };
+  
+      await sender.send(transaction);
+  
+      log("TON payment successful!");
+      alert(`Payment for ${skinName} completed successfully.`);
+    } catch (error) {
+      console.error("Error in handlePayWithTON:", error);
+      alert("Failed to process the TON payment.");
+    }
   };
 
   const handlePayWithStars = async (skinName: string, starsPrice: number) => {
