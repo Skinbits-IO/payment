@@ -39,6 +39,7 @@ function App() {
   console.log("Is connected:", connected);
 
   const handlePayWithTON = async (skinName: string, tonPrice: number) => {
+
     if (!connected) {
       alert("Please connect your TON wallet before proceeding.");
       return;
@@ -46,14 +47,21 @@ function App() {
   
     try {
       log(`Initiating payment with TON for ${skinName}, price: ${tonPrice} TON`);
-  
+      
+      const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
+
+      if (!contractAddress) {
+        console.error("Contract address is not defined in environment variables.");
+        return;
+      }
+
       const transaction = {
-        to: Address.parse(process.env.REACT_APP_CONTRACT_ADDRESS!), // Convert the string to Address type
+        to: Address.parse(contractAddress),
         value: BigInt(tonPrice * 10 ** 9), // Convert TON to nanoTON
-        stateInit: null, // Optional state init for the contract
-        body: null, // Optional payload for contract interaction
+        stateInit: null,
+        body: null,
       };
-  
+
       await sender.send(transaction);
   
       log("TON payment successful!");
