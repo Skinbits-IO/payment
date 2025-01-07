@@ -65,6 +65,10 @@ export function useMainContract() {
         toNano("0.05"),
         toNano("0.7")
       );
-    }
+    },
+    sendPurchase: async (tonPrice: number, skinName: string) => {
+      if (!mainContract) return;
+      await mainContract.sendPurchase(sender, toNano(tonPrice.toString()), skinName);
+    },
   };
 } 

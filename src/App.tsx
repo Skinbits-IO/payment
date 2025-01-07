@@ -7,15 +7,16 @@ import { fromNano, Address } from "ton-core";
 import  WebApp from '@twa-dev/sdk';
 import Panel from './components/panel.tsx';
 
-
+const CONTRACT_ADDRESS = "0QDUmpYN6mzBj-xSBLqlyTxL768tqlqlqA4fqG8NXqejxXG4";
 function App() {
   const {
-    contract_address,
+    contract_address = CONTRACT_ADDRESS,
     counter_value,
     contract_balance,
     sendIncrement,
     sendDeposit,
-    sendWithdrawalRequest
+    sendWithdrawalRequest,
+    sendPurchase
   } = useMainContract();
 
   
@@ -39,38 +40,19 @@ function App() {
   console.log("Is connected:", connected);
 
   const handlePayWithTON = async (skinName: string, tonPrice: number) => {
-
-    if (!connected) {
-      alert("Please connect your TON wallet before proceeding.");
-      return;
-    }
-  
     try {
-      log(`Initiating payment with TON for ${skinName}, price: ${tonPrice} TON`);
-      
-      const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
-
-      if (!contractAddress) {
-        console.error("Contract address is not defined in environment variables.");
-        return;
-      }
-
-      const transaction = {
-        to: Address.parse(contractAddress),
-        value: BigInt(tonPrice * 10 ** 9), // Convert TON to nanoTON
-        stateInit: null,
-        body: null,
-      };
-
-      await sender.send(transaction);
-  
-      log("TON payment successful!");
+      log(`Initiating purchase with TON for ${skinName}, price: ${tonPrice} TON`);
+      await sendPurchase(tonPrice, skinName);
+      log("TON purchase successful!");
       alert(`Payment for ${skinName} completed successfully.`);
     } catch (error) {
       console.error("Error in handlePayWithTON:", error);
-      alert("Failed to process the TON payment.");
+      log("TON purchase failed or was cancelled.");
+      alert("Payment failed or was cancelled.");
     }
   };
+  
+  
 
   const handlePayWithStars = async (skinName: string, starsPrice: number) => {
     console.log(`Paying with Stars for ${skinName}, price: ${starsPrice} XTR`);

@@ -103,6 +103,24 @@ export class MainContract implements Contract {
         });
       }
 
+      async sendPurchase(
+        provider: ContractProvider,
+        sender: Sender,
+        value: bigint,
+        itemId: string
+      ) {
+        const msg_body = beginCell()
+          .storeUint(3, 32) // OP code for purchase
+          .storeBuffer(Buffer.from(itemId, 'utf-8')) // Convert string to Buffer
+          .endCell();
+      
+        await provider.internal(sender, {
+          value,
+          sendMode: SendMode.PAY_GAS_SEPARATELY,
+          body: msg_body,
+        });
+      }
+
 
 
     async getData(provider: ContractProvider) {
