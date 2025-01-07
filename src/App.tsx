@@ -3,7 +3,7 @@ import React  from "react";
 import { TonConnectButton } from "@tonconnect/ui-react";
 import { useMainContract } from "./hooks/useMainContract";
 import { useTonConnect } from "./hooks/useTonConnect";
-import { fromNano, Address } from "ton-core";
+import { fromNano} from "ton-core";
 import  WebApp from '@twa-dev/sdk';
 import Panel from './components/panel.tsx';
 
@@ -20,7 +20,7 @@ function App() {
   } = useMainContract();
 
   
-  const { sender, connected } = useTonConnect();
+  const { connected } = useTonConnect();
 
   const [logs, setLogs] = React.useState<string[]>([]);
   const [starsAmount, setStarsAmount] = React.useState<number>(0);
