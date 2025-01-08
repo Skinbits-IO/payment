@@ -7,7 +7,6 @@ import { fromNano} from "ton-core";
 import  WebApp from '@twa-dev/sdk';
 import Panel from './components/panel.tsx';
 
-//const CONTRACT_ADDRESS = "0QDUmpYN6mzBj-xSBLqlyTxL768tqlqlqA4fqG8NXqejxXG4";
 function App() {
   const {
     contract_address,
