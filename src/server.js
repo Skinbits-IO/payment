@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: "https://artyomcha.github.io", // Replace with your frontend's URL
+    origin: "https://github.com/Skinbits-IO/payment.git", // Replace with your frontend's URL
   })
 );
 
