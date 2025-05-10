@@ -106,7 +106,7 @@ function App() {
 
   const handleWithdrawStars = async (starsAmount: number, password: string) => {
     console.log(`Requesting withdrawal of ${starsAmount} Stars`);
-    log(`Requesting withdrawal of ${starsAmount} Stars`);
+    log(`Requesting withdrawal of ${starsAmount} Star`);
     try {
       // Call the server's /withdraw-stars endpoint
       const response = await fetch("https://4721-217-61-226-17.ngrok-free.app/withdraw-stars", {
