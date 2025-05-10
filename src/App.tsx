@@ -156,26 +156,26 @@ function App() {
 
           <div className="Container">
             <Panel
-              skinName="CS2 Skin 1"
-              description="A cool skin for CS2 with excellent graphics and design."
+              skinName="Normal"
+              description="FREE ACCESS"
               tonPrice={0}       // Price in TON
-              starsPrice={1}  // Price in TON
+              starsPrice={1}  // Price in stars
               onPayWithTON={handlePayWithTON}
               onPayWithStars={handlePayWithStars}
             />
             <Panel
-              skinName="CS2 Skin 2"
-              description="A cool skin for CS2 with excellent graphics and design."
-              tonPrice={1.5}       // Price in TON
-              starsPrice={150} 
+              skinName="Gold"
+              description="+5 to your farm and tapping level"
+              tonPrice={0.2}       // Price in TON
+              starsPrice={100} 
               onPayWithTON={handlePayWithTON}
               onPayWithStars={handlePayWithStars}
             />
             <Panel
-              skinName="CS2 Skin 3"
-              description="A cool skin for CS2 with excellent graphics and design."
-              tonPrice={1.5}       // Price in TON
-              starsPrice={150} 
+              skinName="Premium"
+              description="+10 to your farm and tapping level"
+              tonPrice={1}       // Price in TON
+              starsPrice={250} 
               onPayWithTON={handlePayWithTON}
               onPayWithStars={handlePayWithStars}
             />
